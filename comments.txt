@@ -1,0 +1,19 @@
+Resumo do fluxo cliente-servidor
+
+Cliente envia primeiro chunk JSON com "file_name" e "output_format".
+
+Cliente envia o arquivo binário da imagem.
+
+Servidor executa convert input output.
+
+Servidor envia o arquivo convertido em chunks.
+
+Cliente monta o arquivo convertido.
+
+Resumo do fluxo esperado no cliente:
+
+Envia 1º chunk: {"file_name":"exemplo.pdf"} como JSON em bytes.
+
+Envia chunks com conteúdo binário do PDF.
+
+Aguarda resposta do servidor com chunks do TXT.

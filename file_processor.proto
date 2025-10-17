@@ -1,0 +1,41 @@
+syntax = "proto3";
+
+package file_processor;
+
+message FileChunk {
+  bytes content = 1;
+}
+
+message CompressPDFRequest {}
+message ConvertToTXTRequest {}
+message ConvertImageFormatRequest {
+  string output_format = 1;
+}
+message ResizeImageRequest {
+  int32 width = 1;
+  int32 height = 2;
+}
+
+message FileRequest {
+  string file_name = 1;
+  oneof parameters {
+    CompressPDFRequest compress_pdf_params = 2;
+    ConvertToTXTRequest convert_to_txt_params = 3;
+    ConvertImageFormatRequest convert_image_format_params = 4;
+    ResizeImageRequest resize_image_params = 5;
+  }
+}
+
+message FileResponse {
+  string file_name = 1;
+  string status_message = 2;
+  bool success = 3;
+  repeated FileChunk file_content = 4;
+}
+
+service FileProcessorService {
+  rpc CompressPDF(stream FileChunk) returns (stream FileChunk);
+  rpc ConvertToTXT(stream FileChunk) returns (stream FileChunk);
+  rpc ConvertImageFormat(stream FileChunk) returns (stream FileChunk);
+  rpc ResizeImage(stream FileChunk) returns (stream FileChunk);
+}
